@@ -1,2 +1,2 @@
-sp_name   = "batmansp"
-state_key = "batmansp/terraform.tfstate"
+sp_name   = "supermansp"
+state_key = "supermansp/terraform.tfstate"
