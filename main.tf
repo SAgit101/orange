@@ -1,9 +1,7 @@
-# Azure AD Application
-resource "azuread_application" "batman" {
-  display_name = "batmansp"
+resource "azuread_application" "sp" {
+  display_name = var.sp_name
 }
 
-# Service Principal for the app
-resource "azuread_service_principal" "batman" {
-  application_id = azuread_application.batman.application_id
+resource "azuread_service_principal" "sp" {
+  application_id = azuread_application.sp.application_id
 }
