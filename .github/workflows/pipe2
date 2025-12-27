@@ -1,7 +1,10 @@
-name: Create Azure User (Batman)
+name: USER – Create Azure User (Batman)
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "user/**"
 
 permissions:
   id-token: write
@@ -9,18 +12,33 @@ permissions:
 
 jobs:
   terraform:
+    name: Terraform – User Directory
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
 
       - name: Terraform Init
         working-directory: user
+        env:
+          ARM_USE_OIDC: true
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         run: terraform init
+
+      - name: Terraform Validate
+        working-directory: user
+        run: terraform validate
 
       - name: Terraform Apply
         working-directory: user
